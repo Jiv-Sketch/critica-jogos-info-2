@@ -17,11 +17,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["DEBUG"] = os.environ.get("FLASK_DEBUG") == "1"
 
-# Segredos vêm de variáveis de ambiente (nunca escreva no código).
-# Sem SECRET_KEY definida, uma chave aleatória é gerada (os logins caem a cada reinício).
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 
-# Conta administradora (única que cadastra/edita/exclui jogos).
 ADMIN_NOME = os.environ.get("ADMIN_NOME", "_JIV_")
 ADMIN_SENHA = os.environ.get("ADMIN_SENHA")
 
@@ -169,9 +166,6 @@ def renderizar_detalhe(jogo, dados):
     avaliacoes = sorted(jogo.avaliacoes, key=lambda a: a.id, reverse=True)
     return render_template("detalhe.html", jogo=jogo, avaliacoes=avaliacoes, minha=minha, dados=dados)
 
-
-# ---------- Autenticação ----------
-
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     if current_user.is_authenticated:
@@ -233,9 +227,6 @@ def logout():
     logout_user()
     flash("Você saiu da sua conta.", "sucesso")
     return redirect(url_for("listar"))
-
-
-# ---------- Jogos ----------
 
 @app.route("/")
 def listar():
@@ -328,14 +319,11 @@ def deletar(jogo_id):
     flash("Jogo removido com sucesso!", "sucesso")
     return redirect(url_for("listar"))
 
-
-# ---------- Avaliações ----------
-
 @app.route("/jogo/<int:jogo_id>/avaliar", methods=["POST"])
 @login_required
 def avaliar(jogo_id):
     if current_user.is_admin:
-        abort(403)  # a conta admin só gerencia jogos; quem avalia são os demais usuários
+        abort(403)
 
     jogo = db.get_or_404(Jogo, jogo_id)
     dados, erros = validar_avaliacao(request.form)
