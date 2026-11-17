@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Metacritic Games{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a class="logo" href="{{ url_for('listar') }}">San Tung Tung<span> Sahur</span> Games</a>
+            <nav class="nav">
+                {% if current_user.is_authenticated %}
+                    <span class="meta">Olá, {{ current_user.nome }}{% if current_user.is_admin %} (admin){% endif %}</span>
+                    {% if current_user.is_admin %}
+                        <a class="btn" href="{{ url_for('cadastrar') }}">+ Novo jogo</a>
+                    {% endif %}
+                    <form class="inline" action="{{ url_for('logout') }}" method="post">
+                        <button type="submit" class="btn btn-sec">Sair</button>
+                    </form>
+                {% else %}
+                    <a class="btn btn-sec" href="{{ url_for('login') }}">Entrar</a>
+                    <a class="btn" href="{{ url_for('registro') }}">Criar conta</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% for categoria, mensagem in mensagens %}
+                <div class="flash {{ categoria }}">{{ mensagem }}</div>
+            {% endfor %}
+        {% endwith %}
+        {% block conteudo %}{% endblock %}
+    </main>
+</body>
+</html>

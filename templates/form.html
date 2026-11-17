@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ 'Editar jogo' if jogo else 'Novo jogo' }} - Metacritic Games{% endblock %}
+
+{% block conteudo %}
+<div class="topo">
+    <h1>{{ 'Editar jogo' if jogo else 'Cadastrar jogo' }}</h1>
+</div>
+
+<form class="dados" method="post"
+      action="{{ url_for('editar', jogo_id=jogo.id) if jogo else url_for('cadastrar') }}">
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" name="nome" maxlength="99" required value="{{ dados.nome }}">
+
+    <div class="linha">
+        <div>
+            <label for="ano_lancamento">Ano de lançamento</label>
+            <input type="number" id="ano_lancamento" name="ano_lancamento" min="1950" required value="{{ dados.ano_lancamento }}">
+        </div>
+        <div>
+            <label for="genero">Gênero</label>
+            <input type="text" id="genero" name="genero" maxlength="30" required list="generos" value="{{ dados.genero }}">
+            <datalist id="generos">
+                <option value="Ação">
+                <option value="Aventura">
+                <option value="RPG">
+                <option value="Estratégia">
+                <option value="Esporte">
+                <option value="Corrida">
+                <option value="Terror">
+                <option value="Simulação">
+                <option value="Plataforma">
+                <option value="Luta">
+                <option value="Puzzle">
+            </datalist>
+        </div>
+    </div>
+
+    <label for="imagem">URL da imagem (opcional)</label>
+    <input type="url" id="imagem" name="imagem" maxlength="500" value="{{ dados.imagem }}">
+
+    <label for="sinopse">Sinopse (opcional)</label>
+    <textarea id="sinopse" name="sinopse" maxlength="2000" rows="6">{{ dados.sinopse }}</textarea>
+
+    <div class="botoes">
+        <button type="submit" class="btn">{{ 'Salvar alterações' if jogo else 'Cadastrar' }}</button>
+        <a class="btn btn-sec" href="{{ url_for('detalhe', jogo_id=jogo.id) if jogo else url_for('listar') }}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

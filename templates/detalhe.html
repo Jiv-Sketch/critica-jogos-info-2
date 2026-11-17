@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ jogo.nome }} - Metacritic Games{% endblock %}
+
+{% block conteudo %}
+{% set eh_admin = current_user.is_authenticated and current_user.is_admin %}
+<section class="detalhe">
+    <img src="{{ jogo.imagem }}" alt="Capa de {{ jogo.nome }}"
+         onerror="this.onerror=null;this.src='https://placehold.co/300x400?text=Sem+Imagem';">
+    <div>
+        <h1>{{ jogo.nome }}</h1>
+        <div class="meta">{{ jogo.genero }} · {{ jogo.ano_lancamento }}</div>
+        <div class="resumo">
+            <div class="nota estatica {{ jogo.media|classe_nota }}">{{ jogo.media if jogo.media is not none else '–' }}</div>
+            <span class="meta">Média de {{ jogo.avaliacoes|length }} avaliação(ões)</span>
+        </div>
+        {% if jogo.sinopse %}
+        <h2 class="secao sinopse-titulo">Sinopse</h2>
+        <p class="sinopse">{{ jogo.sinopse }}</p>
+        {% endif %}
+        {% if eh_admin %}
+        <div class="acoes sem-margem">
+            <a class="btn btn-sec" href="{{ url_for('editar', jogo_id=jogo.id) }}">Editar jogo</a>
+            <form action="{{ url_for('deletar', jogo_id=jogo.id) }}" method="post"
+                  onsubmit="return confirm('Deseja realmente excluir este jogo e todas as suas avaliações?');">
+                <button type="submit" class="btn btn-perigo">Excluir jogo</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% if not eh_admin %}
+<h2 class="secao">{{ 'Sua avaliação' if minha else 'Avaliar este jogo' }}</h2>
+{% if current_user.is_authenticated %}
+<form class="dados" method="post" action="{{ url_for('avaliar', jogo_id=jogo.id) }}">
+    <label for="nota">Nota (0 a 100)</label>
+    <input type="number" id="nota" name="nota" min="0" max="100" required value="{{ dados.nota }}">
+
+    <label for="pros">Prós</label>
+    <textarea id="pros" name="pros" maxlength="500">{{ dados.pros }}</textarea>
+
+    <label for="contras">Contras</label>
+    <textarea id="contras" name="contras" maxlength="500">{{ dados.contras }}</textarea>
+
+    <label for="opiniao">Opinião</label>
+    <textarea id="opiniao" name="opiniao" maxlength="500">{{ dados.opiniao }}</textarea>
+
+    <div class="botoes">
+        <button type="submit" class="btn">{{ 'Atualizar avaliação' if minha else 'Enviar avaliação' }}</button>
+    </div>
+</form>
+{% else %}
+<p class="meta">
+    <a class="link" href="{{ url_for('login', next=url_for('detalhe', jogo_id=jogo.id)) }}">Entre</a>
+    ou <a class="link" href="{{ url_for('registro') }}">crie uma conta</a> para avaliar este jogo.
+</p>
+{% endif %}
+{% endif %}
+
+<h2 class="secao">Avaliações dos usuários</h2>
+{% if avaliacoes %}
+<div class="lista-avaliacoes">
+    {% for a in avaliacoes %}
+    <article class="avaliacao">
+        <div class="nota estatica {{ a.nota|classe_nota }}">{{ a.nota }}</div>
+        <div class="conteudo">
+            <strong>{{ a.usuario.nome }}</strong>
+            {% if a.pros %}<div class="bloco"><strong class="pro">Prós:</strong> {{ a.pros }}</div>{% endif %}
+            {% if a.contras %}<div class="bloco"><strong class="contra">Contras:</strong> {{ a.contras }}</div>{% endif %}
+            {% if a.opiniao %}<div class="bloco"><strong>Opinião:</strong> {{ a.opiniao }}</div>{% endif %}
+            {% if current_user.is_authenticated and current_user.id == a.usuario_id %}
+            <form class="inline" action="{{ url_for('deletar_avaliacao', avaliacao_id=a.id) }}" method="post"
+                  onsubmit="return confirm('Deseja realmente excluir sua avaliação?');">
+                <button type="submit" class="btn btn-perigo">Excluir avaliação</button>
+            </form>
+            {% endif %}
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<p class="meta">Nenhuma avaliação ainda.</p>
+{% endif %}
+{% endblock %}

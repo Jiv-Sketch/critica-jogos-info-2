@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<div class="topo">
+    <h1>Jogos avaliados</h1>
+    <span class="meta">{{ jogos|length }} jogo(s)</span>
+</div>
+
+{% if jogos %}
+<div class="grade">
+    {% for jogo in jogos %}
+    <article class="card">
+        <a class="capa" href="{{ url_for('detalhe', jogo_id=jogo.id) }}">
+            <img src="{{ jogo.imagem }}" alt="Capa de {{ jogo.nome }}" loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/300x400?text=Sem+Imagem';">
+            <div class="nota {{ jogo.media|classe_nota }}">{{ jogo.media if jogo.media is not none else '–' }}</div>
+        </a>
+        <div class="corpo">
+            <h2><a href="{{ url_for('detalhe', jogo_id=jogo.id) }}">{{ jogo.nome }}</a></h2>
+            <div class="meta">{{ jogo.genero }} · {{ jogo.ano_lancamento }}</div>
+            <div class="meta">{{ jogo.avaliacoes|length }} avaliação(ões)</div>
+        </div>
+        <div class="acoes">
+            <a class="btn" href="{{ url_for('detalhe', jogo_id=jogo.id) }}">
+                {{ 'Ver' if current_user.is_authenticated and current_user.is_admin else 'Ver / avaliar' }}
+            </a>
+            {% if current_user.is_authenticated and current_user.is_admin %}
+                <a class="btn btn-sec" href="{{ url_for('editar', jogo_id=jogo.id) }}">Editar</a>
+                <form action="{{ url_for('deletar', jogo_id=jogo.id) }}" method="post"
+                      onsubmit="return confirm('Deseja realmente excluir este jogo?');">
+                    <button type="submit" class="btn btn-perigo">Excluir</button>
+                </form>
+            {% endif %}
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="vazio">
+    <p>Nenhum jogo cadastrado ainda.</p>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+        <a class="btn" href="{{ url_for('cadastrar') }}">Cadastrar o primeiro jogo</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

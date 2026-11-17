@@ -1,0 +1,348 @@
+:root {
+    --bg: #172121;
+    --card: #1e1e1e;
+    --borda: #ffffff;
+    --texto: #f2f2f2;
+    --suave: #a0a0a0;
+    --destaque: #34ff52;
+    --alta: #66cc33;
+    --media: #ffcc33;
+    --baixa: #ff0000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--texto);
+}
+
+header {
+    background: #000;
+    border-bottom: 3px solid var(--destaque);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+header a.logo {
+    color: var(--texto);
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+header a.logo span {
+    color: var(--destaque);
+}
+
+main {
+    padding: 28px 0 60px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    background: var(--destaque);
+    color: #000;
+}
+
+.btn-sec {
+    background: #333;
+    color: var(--texto);
+}
+
+.btn-perigo {
+    background: #b3261e;
+    color: #fff;
+}
+
+.flash {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.flash.sucesso {
+    background: #1f3d1a;
+    border: 1px solid var(--alta);
+}
+
+.flash.erro {
+    background: #3d1a1a;
+    border: 1px solid var(--baixa);
+}
+
+.topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.topo h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    border: 3px solid var(--borda);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card .capa {
+    position: relative;
+}
+
+.card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    background: #2a2a2a;
+}
+
+.nota {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 46px;
+    height: 46px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #000;
+}
+
+.nota.alta {
+    background: var(--alta);
+}
+
+.nota.media {
+    background: var(--media);
+}
+
+.nota.baixa {
+    background: var(--baixa);
+    color: #fff;
+}
+
+.card .corpo {
+    padding: 14px;
+    flex: 1;
+}
+
+.card h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+}
+
+.meta {
+    color: var(--suave);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.bloco {
+    font-size: 13px;
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+.bloco strong.pro {
+    color: var(--alta);
+}
+
+.bloco strong.contra {
+    color: #ff6b6b;
+}
+
+.acoes {
+    display: flex;
+    gap: 8px;
+    padding: 0 14px 14px;
+}
+
+.acoes form {
+    margin: 0;
+}
+
+.vazio {
+    text-align: center;
+    color: var(--suave);
+    padding: 60px 0;
+}
+
+form.dados {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 24px;
+    max-width: 640px;
+}
+
+form.dados label {
+    display: block;
+    margin: 14px 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+form.dados input,
+form.dados textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #3a3a3a;
+    background: #121212;
+    color: var(--texto);
+    font: inherit;
+}
+
+form.dados textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.botoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+form.inline {
+    display: inline;
+    margin: 0;
+}
+
+.card .capa {
+    display: block;
+    position: relative;
+}
+
+.card h2 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card .acoes {
+    flex-wrap: wrap;
+}
+
+.nota.sem {
+    background: #555;
+    color: #fff;
+}
+
+.nota.estatica {
+    position: static;
+    flex-shrink: 0;
+}
+
+.link {
+    color: var(--destaque);
+}
+
+.secao {
+    margin: 32px 0 14px;
+    font-size: 20px;
+}
+
+.detalhe {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.detalhe img {
+    width: 220px;
+    max-width: 100%;
+    border-radius: 10px;
+    background: #2a2a2a;
+}
+
+.detalhe h1 {
+    margin: 0 0 6px;
+}
+
+.resumo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 14px 0;
+}
+
+.acoes.sem-margem {
+    padding: 0;
+}
+
+.lista-avaliacoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 760px;
+}
+
+.avaliacao {
+    display: flex;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.avaliacao .conteudo {
+    flex: 1;
+}
+
+.avaliacao form.inline {
+    margin-top: 10px;
+}
